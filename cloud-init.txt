@@ -1,0 +1,3 @@
+PS1='\u on \h at \t\nBASh v\V in \w (\#) >> '
+cp -p .bashrc .bashrc.orig
+cp -p .bash_profile .bash_profile.orig
