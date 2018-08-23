@@ -1,3 +1,10 @@
+# Set the prompt
 PS1='\u on \h at \t\nBASh v\V in \w (\#) >> '
+
+# Backup the BASh config scripts
 cp -p .bashrc .bashrc.orig
 cp -p .bash_profile .bash_profile.orig
+
+# Add the aliases to the .bash_profile
+echo 'alias cls=clear' >> .bash_profile
+echo "alias dir='ls -philFA'" >> .bash_profile
