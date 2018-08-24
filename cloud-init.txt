@@ -1,8 +1,22 @@
-# Set the prompt:
-PS1='\u on \h at \t\nBASh v\V in \w (\#) >> '
+# Change the shell scripts for the `root` user:
+cd /root
 
-# Set vi mode for command-line editing:
-set -o vi
+# Backup the BASh config scripts
+cp -p .bashrc .bashrc.orig
+cp -p .bash_profile .bash_profile.orig
+
+# Add the aliases to the .bash_profile
+echo 'alias cls=clear' >> .bash_profile
+echo "alias dir='ls -philFA'" >> .bash_profile
+
+# Insert the PS1 prompt setting into the .bash_profile:
+sed -i "s|/^fi|^fi\\n\\nPS1=\'\\u on \\h at \\t\\nBASh v\\V in \\w \(\\#\) >> \'|g" .bash_profile.txt
+
+# Insert the `vi-mode` command-line setting into the .bashrc:
+sed -i "s|^\# .bashrc|\# .bashrc\n\\n\# Use vi\(m\) on the command line\:\\nset -o vi|g" .bashrc
+
+# Change the shell scripts for the `centos` user:
+cd /home/centos
 
 # Backup the BASh config scripts
 cp -p .bashrc .bashrc.orig
