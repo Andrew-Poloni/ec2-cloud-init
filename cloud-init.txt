@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Change the shell scripts for the `root` user:
 cd /root
 
