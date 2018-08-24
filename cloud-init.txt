@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Install system packages we want:
+yum install git -y
+
+yum install epel-release -y
+yum install ShellCheck -y
+
 # Change the shell scripts for the `root` user:
 cd /root
 
@@ -7,15 +13,15 @@ cd /root
 cp -p .bashrc .bashrc.orig
 cp -p .bash_profile .bash_profile.orig
 
-# Add the aliases to the .bash_profile
-echo 'alias cls=clear' >> .bash_profile
-echo "alias dir='ls -philFA'" >> .bash_profile
-
-# Insert the PS1 prompt setting into the .bash_profile:
-sed -i "s|/^fi|^fi\\n\\nPS1=\'\\u on \\h at \\t\\nBASh v\\V in \\w \(\\#\) >> \'|g" .bash_profile.txt
-
 # Insert the `vi-mode` command-line setting into the .bashrc:
 sed -i "s|^\# .bashrc|\# .bashrc\n\\n\# Use vi\(m\) on the command line\:\\nset -o vi|g" .bashrc
+
+# Add my fav aliases to the .bashrc:
+sed -i "s|^alias mv='mv -i'|^alias mv='mv -i'\\nalias dir='ls -philFa'|g" .bashrc
+sed -i "s|^alias mv='mv -i'|^alias mv='mv -i'\\nalias cls=clear|g" .bashrc
+
+# Insert the PS1 prompt setting into the .bash_profile:
+sed -i "s|^fi|fi\n\nPS1='\\\u on \\\h at \\\t\\\nBASh v\\\V in \w \(/\#\) >> '|g" .bash_profile
 
 # Change the shell scripts for the `centos` user:
 cd /home/centos
@@ -24,12 +30,34 @@ cd /home/centos
 cp -p .bashrc .bashrc.orig
 cp -p .bash_profile .bash_profile.orig
 
-# Add the aliases to the .bash_profile
-echo 'alias cls=clear' >> .bash_profile
-echo "alias dir='ls -philFA'" >> .bash_profile
-
-# Insert the PS1 prompt setting into the .bash_profile:
-sed -i "s|/^fi|^fi\\n\\nPS1=\'\\u on \\h at \\t\\nBASh v\\V in \\w \(\\#\) >> \'|g" .bash_profile.txt
-
 # Insert the `vi-mode` command-line setting into the .bashrc:
 sed -i "s|^\# .bashrc|\# .bashrc\n\\n\# Use vi\(m\) on the command line\:\\nset -o vi|g" .bashrc
+
+# Add the aliases to the .bash_profile
+echo 'alias cls=clear' >> .bashrc
+echo "alias dir='ls -philFA'" >> .bashrc
+
+# Insert the PS1 prompt setting into the .bash_profile:
+sed -i "s|^fi|fi\n\nPS1='\\\u on \\\h at \\\t\\\nBASh v\\\V in \w \(/\#\) >> '|g" .bash_profile
+
+# Create a directory for the repos we'll pull out of GitHub:
+mkdir GitHub_repos
+
+# Move the GitHub projects dir and pull the `.vimrc` project:
+cd GitHub_repos
+git clone https://github.com/Andrew-Poloni/vimrc.git
+
+# Copy the `.vimrc` file to both the `root` and `centos` user root directories:
+cd vimrc
+cp .vimrc /home/centos
+cp .vimrc /home/root
+
+# Create the vim backup directory for the `centos` user:
+cd /home/centos
+mkdir -pv .vim/backups
+chown -r centos:centos .vim
+chmod 0755 .vim
+
+# Create the vim backup directory for the `root` user:
+cd /root
+mkdir -pv .vimrc/backups
